@@ -1,5 +1,4 @@
 import React from 'react';
-import './style.css';
 import { IoSearchOutline } from 'react-icons/io5';
 import { useNavigate } from 'react-router-dom';
 
