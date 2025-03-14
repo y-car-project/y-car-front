@@ -1,5 +1,10 @@
 import React from 'react';
+import Header from '../../components/Header';
 
 export default function Main() {
-  return <h1 className="text-4xl font-bold underline text-blue-600">Hello world!</h1>;
+  return (
+    <div>
+      <Header />
+    </div>
+  );
 }
