@@ -1,9 +1,57 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+
 import { IoSearchOutline } from 'react-icons/io5';
 import { useNavigate } from 'react-router-dom';
 
 export default function Header() {
   const navigate = useNavigate();
+  const [isLogin, setIsLogin] = useState(false);
+
+  const getCookie = (cname) => {
+    const name = `${cname}=`;
+    const decodedCookie = decodeURIComponent(document.cookie);
+    const ca = decodedCookie.split(';');
+    for (let i = 0; i < ca.length; i += 1) {
+      const c = ca[i].trim();
+      if (c.indexOf(name) === 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return '';
+  };
+
+  function removeCookie(cname) {
+    document.cookie = `${cname}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+  }
+
+  useEffect(() => {
+    let Authorization = sessionStorage.getItem('Authorization');
+    if (Authorization) {
+      axios.defaults.headers.common.Authorization = Authorization; // JWT 로그인 처리
+      setIsLogin(true);
+    } else {
+      Authorization = getCookie('Authorization');
+      if (Authorization) {
+        axios.defaults.headers.common.Authorization = Authorization; // 카카오 로그인 처리
+        setIsLogin(true);
+      }
+    }
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      await axios.post('http://localhost:8080/logout');
+      sessionStorage.removeItem('Authorization'); // 세션 스토리지에서 Authorization 삭제 (JWT)
+      axios.defaults.headers.common.Authorization = ''; // Authorization 헤더에서 JWT 제거
+      removeCookie('Authorization');
+      removeCookie('email');
+      setIsLogin(false);
+      window.location.reload();
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
+  };
 
   return (
     <header className="font-[SpoqaHanSansNeo-Medium]  mb-[40px] justify-items-center">
@@ -41,23 +89,43 @@ export default function Header() {
           </div>
         </div>
         <div className="justify-items-end">
-          <div className="flex h-[70px]">
-            <button
-              onClick={() => navigate(`/login`)}
-              className="text-[#999EA1] text-[13px] font-[SpoqaHanSansNeo-Light]"
-              type="button"
-            >
-              로그인
-            </button>
-            <button
-              onClick={() => navigate(`/signup`)}
-              className="relative text-[#999EA1] text-[13px] font-[SpoqaHanSansNeo-Light] ml-[16px] pl-[16px]"
-              type="button"
-            >
-              <span className="absolute top-1/2 left-0 transform -translate-y-1/2 w-[1px] h-[12px] bg-[#d8d8d8]" />
-              회원가입
-            </button>
-          </div>
+          {isLogin ? (
+            <div className="flex h-[70px]">
+              <button
+                onClick={handleLogout}
+                className="text-[#999EA1] text-[13px] font-[SpoqaHanSansNeo-Light]"
+                type="button"
+              >
+                로그아웃
+              </button>
+              <button
+                onClick={() => alert('마이페이지')}
+                className="relative text-[#999EA1] text-[13px] font-[SpoqaHanSansNeo-Light] ml-[16px] pl-[16px]"
+                type="button"
+              >
+                <span className="absolute top-1/2 left-0 transform -translate-y-1/2 w-[1px] h-[12px] bg-[#d8d8d8]" />
+                마이페이지
+              </button>
+            </div>
+          ) : (
+            <div className="flex h-[70px]">
+              <button
+                onClick={() => navigate(`/login`)}
+                className="text-[#999EA1] text-[13px] font-[SpoqaHanSansNeo-Light]"
+                type="button"
+              >
+                로그인
+              </button>
+              <button
+                onClick={() => navigate(`/signup`)}
+                className="relative text-[#999EA1] text-[13px] font-[SpoqaHanSansNeo-Light] ml-[16px] pl-[16px]"
+                type="button"
+              >
+                <span className="absolute top-1/2 left-0 transform -translate-y-1/2 w-[1px] h-[12px] bg-[#d8d8d8]" />
+                회원가입
+              </button>
+            </div>
+          )}
           <div className="relative">
             <IoSearchOutline className="absolute left-[10px] bottom-[11px] size-[25px] text-gray-500" />
             <input
