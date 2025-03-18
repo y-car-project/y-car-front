@@ -4,6 +4,7 @@ import { LuEye, LuEyeOff } from 'react-icons/lu';
 import { FaCircleXmark } from 'react-icons/fa6';
 import { RiCheckboxCircleFill } from 'react-icons/ri';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 /** 커스텀 Dot 컴포넌트 (밖에서 정의) */
 function CustomDot() {
@@ -53,7 +54,7 @@ const carouselSettings = {
   customPaging: customPagingFn,
 };
 
-export default function LoginWithCarousel() {
+export default function Login() {
   const [userId, setUserId] = useState('');
   const [idError, setIdError] = useState('');
   const [duplicateMessage, setDuplicateMessage] = useState('');
@@ -64,7 +65,7 @@ export default function LoginWithCarousel() {
 
   const [keepLoggedIn, setKeepLoggedIn] = useState(false);
   const [saveId, setSaveId] = useState(false);
-
+  const navigate = useNavigate();
   /** 아이디 검증 */
   const validateUserId = (id) => {
     if (id === '') setIdError('아이디를 입력해주세요.');
@@ -129,7 +130,9 @@ export default function LoginWithCarousel() {
       {/* 왼쪽: 로그인 폼 */}
       <div className="ml-[25%] flex flex-col justify-center items-center bg-white">
         <div className="login-box">
-          <img className="w-auto h-[50px] mb-[10%]" src={`${process.env.PUBLIC_URL}/images/logo.png`} alt="logo" />
+          <a href="/main">
+            <img className="w-auto h-[50px] mb-[10%]" src={`${process.env.PUBLIC_URL}/images/logo.png`} alt="logo" />
+          </a>
           <h3 className="flex text-[18px] font-bold text-left mb-4 pl-[20%] text-[#b70f28]">회원</h3>
 
           <div className="w-full h-[2px] bg-[#b70f28] mb-10" />
@@ -142,9 +145,9 @@ export default function LoginWithCarousel() {
                 className={`w-full h-full border rounded-lg px-3 ${
                   idError ? 'border-red-500 bg-red-100' : 'border-gray-300'
                 }`}
+                placeholder="아이디 입력"
                 type="text"
                 autoComplete="off"
-                placeholder="아이디 입력"
                 value={userId}
                 onChange={handleUserIdChange}
                 onBlur={handleUserIdBlur}
@@ -231,7 +234,13 @@ export default function LoginWithCarousel() {
           </div>
           {/* 회원가입 / 아이디 찾기 / 비밀번호 찾기 */}
           <div className="flex justify-center items-center gap-4 mb-10 text-gray-800 text-[14px]">
-            <button type="button" className="hover:underline">
+            <button
+              type="button"
+              className="hover:underline"
+              onClick={() => {
+                navigate('/signup');
+              }}
+            >
               회원가입
             </button>
             <span className="text-gray-200">|</span>
