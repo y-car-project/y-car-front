@@ -19,11 +19,21 @@
     "react/jsx-filename-extension": 0,
     "react/jsx-one-expression-per-line": 0,
     "no-nested-ternary": 0,
+    "import/no-unresolved": "off",
+    "react/prop-types": "off", // prop-types 경고 끄기
+    "consistent-return": "off", // return 관련 경고 끄기
     "prettier/prettier": [
       "error",
       {
         "endOfLine": "auto"
       }
     ]
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "paths": ["src"]
+      }
+    }
   }
 }
