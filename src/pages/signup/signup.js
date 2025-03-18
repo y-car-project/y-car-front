@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { RiCheckboxCircleLine } from 'react-icons/ri';
+import { useNavigate } from 'react-router-dom';
 
 export default function Signup() {
   const [emailDomain, setEmailDomain] = useState('');
@@ -7,13 +8,16 @@ export default function Signup() {
   const [customDomain, setCustomDomain] = useState('');
   const [userId, setUserId] = useState('');
   const [userName, setUserName] = useState('');
+  const [nameError, setNameError] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [phoneError, setPhoneError] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [idError, setIdError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
   const [duplicateMessage, setDuplicateMessage] = useState('');
+  const navigate = useNavigate();
 
   const validateUserId = (id) => {
     const idRegex = /^[a-zA-Z0-9]{4,12}$/;
@@ -33,10 +37,24 @@ export default function Signup() {
     }
   };
 
+  const validateUserName = (name) => {
+    const nameRegex = /^[a-zA-Z가-힣]+$/;
+    if (!nameRegex.test(name)) {
+      setNameError('이름은 영문이나 한글만 입력 가능합니다.');
+    } else {
+      setNameError('');
+    }
+  };
+
   const handleUserIdChange = (e) => {
     setUserId(e.target.value);
     validateUserId(e.target.value);
     setDuplicateMessage('');
+  };
+
+  const handleUserNameChange = (e) => {
+    setUserName(e.target.value);
+    validateUserName(e.target.value);
   };
 
   const handlePasswordChange = (e) => {
@@ -68,6 +86,15 @@ export default function Signup() {
     }
   };
 
+  const handlePhoneChange = (e) => {
+    setPhoneNumber(e.target.value);
+    const phoneRegex = /^010-\d{4}-\d{4}$/;
+    if (!phoneRegex.test(e.target.value)) {
+      setPhoneError('전화번호 형식은 010-0000-0000 이어야 합니다.');
+    } else {
+      setPhoneError('');
+    }
+  };
   const [agreements, setAgreements] = useState({
     terms: false,
     privacy: false,
@@ -80,10 +107,8 @@ export default function Signup() {
     setAgreements((prev) => ({ ...prev, [name]: !prev[name] }));
   };
 
-  // 필수 약관 동의 여부 (이용약관, 개인정보 수집 및 이용, 환불약관)
   const isRequiredAgreementsChecked = agreements.terms && agreements.privacy && agreements.refund;
 
-  // 아이디 중복 확인 함수 (백엔드 엔드포인트 예시: /checkUserId)
   const handleDuplicateCheck = async () => {
     if (!userId) {
       setDuplicateMessage('아이디를 입력해주세요.');
@@ -103,8 +128,26 @@ export default function Signup() {
     }
   };
 
-  // 회원가입 제출 함수 (백엔드 엔드포인트: /insertMember)
   const handleSignup = async () => {
+    // 모든 필수 입력값 체크
+    if (!userName || !userId || !emailUser || !phoneNumber || !password || !confirmPassword) {
+      setIdError('아이디는 영문과 숫자를 조합하여 4~12자로 입력하세요.');
+      setPasswordError('비밀번호는 대/소문자, 숫자, 특수문자를 포함하여 8~20자로 입력하세요.');
+      setPhoneError('전화번호 형식은 010-0000-0000 이어야 합니다.');
+      setNameError('이름은 영문이나 한글만 입력 가능합니다.');
+      return;
+    }
+    // 이메일 도메인도 체크 (customDomain 또는 emailDomain 중 하나는 있어야 함)
+    if (!(customDomain || emailDomain)) {
+      alert('이메일 도메인을 선택하거나 직접 입력해 주세요.');
+      return;
+    }
+    // 입력한 값들에 오류가 있는지 확인
+    if (nameError || idError || passwordError || confirmPasswordError || phoneError) {
+      alert('입력한 정보에 오류가 있습니다. 확인해 주세요.');
+      return;
+    }
+
     if (!isRequiredAgreementsChecked) {
       alert('필수 약관에 모두 동의하셔야 합니다.');
       return;
@@ -130,10 +173,12 @@ export default function Signup() {
       });
       const data = await response.json();
       console.log('회원가입 성공:', data);
-      // 성공 시 메시지 출력 또는 페이지 이동 처리
+      alert('회원가입에 성공했습니다.');
+      navigate('/login');
     } catch (error) {
       console.error('회원가입 에러:', error);
-      // 에러 메시지 처리
+      alert('회원가입에 실패했습니다.');
+      navigate('/');
     }
   };
 
@@ -155,12 +200,15 @@ export default function Signup() {
             이름
             <div>
               <input
-                className="w-[590px] h-[56px] border border-gray-300 rounded px-3"
+                className={`w-[590px] h-[56px] border rounded px-3 ${
+                  nameError ? 'border-red-500 bg-red-100' : 'border-gray-300'
+                }`}
                 type="text"
                 placeholder=" 이름"
                 value={userName}
-                onChange={(e) => setUserName(e.target.value)}
+                onChange={handleUserNameChange}
               />
+              {nameError && <p className="text-red-500 text-sm mt-1">{nameError}</p>}
             </div>
           </div>
           <div className="flex-auto">
@@ -277,12 +325,15 @@ export default function Signup() {
             <div className="flex-1 ">
               휴대폰번호
               <input
-                className="w-[590px] h-[56px] border border-gray-300 rounded px-3"
+                className={`w-[590px] h-[56px] border rounded px-3 ${
+                  phoneError ? 'border-red-500 bg-red-100' : 'border-gray-300'
+                }`}
                 type="text"
                 placeholder=" 휴대폰번호"
                 value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value)}
+                onChange={handlePhoneChange}
               />
+              {phoneError && <p className="text-red-500 text-sm mt-1">{phoneError}</p>}
             </div>
           </div>
         </div>
