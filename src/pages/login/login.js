@@ -109,17 +109,15 @@ export default function Login() {
       });
 
       if (response.status === 200 && response.data.success) {
-        // 로그인 성공 처리
+        sessionStorage.setItem('Authorization', response.data.Authorization);
         alert('로그인 성공!');
-        // 예: 페이지 이동, 로컬스토리지 저장 등 추가 로직
+        navigate('/main');
       } else {
-        // 로그인 실패 처리 (서버가 보낸 에러 메시지 표시)
         setIdError('');
         setPasswordError('');
         setDuplicateMessage(response.data.message || '아이디 또는 비밀번호가 올바르지 않습니다.');
       }
     } catch (error) {
-      // 요청 실패 시 처리 (네트워크 에러 등)
       console.error('로그인 요청 실패:', error);
       alert('서버와의 연결에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.');
     }
