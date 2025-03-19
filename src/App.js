@@ -8,6 +8,7 @@ import Signup from './pages/signup/signup';
 import Login from './pages/login/login';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import 'antd/dist/reset.css';
 
 function App() {
   return (

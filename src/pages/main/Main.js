@@ -13,13 +13,14 @@ import 'swiper/css/navigation';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import CountdownTimer from '../../components/CountDownTimer';
+import Register from '../../components/Register';
 
 function Main() {
   const [cars, setCars] = useState([]);
   const [searchCar, setSearchCar] = useState('');
   const [filteredCars, setFilteredCars] = useState([]);
 
-  useEffect(() => {
+  const fetchCars = () => {
     axios
       .get('http://localhost:8080/getAllUsedCars')
       .then((response) => {
@@ -28,6 +29,10 @@ function Main() {
       .catch((error) => {
         console.error('Error fetching data:', error);
       });
+  };
+
+  useEffect(() => {
+    fetchCars();
   }, []);
 
   const onChange = (e) => {
@@ -46,7 +51,7 @@ function Main() {
     <div>
       <Header />
       <MainBanner />
-      <MainMenu />
+      <MainMenu onRegisterSuccess={fetchCars} />
       <WeeklyCars />
       <div className="bg-[#f6f8fa] py-[80px] my-[70px]">
         <div className="justify-items-center max-w-[1260px] m-auto">
@@ -151,7 +156,12 @@ function MainBanner() {
   );
 }
 
-function MainMenu() {
+function MainMenu({ onRegisterSuccess }) {
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const openModal = () => setModalVisible(true);
+  const closeModal = () => setModalVisible(false);
+
   return (
     <div className="max-w-[1260px] flex justify-between m-auto py-[40px]">
       <div className="flex gap-[30px] justify-center w-[410px] h-[140px] p-[20px 40px] rounded-[8px] align-items-center shadow-custom justify-center items-center">
@@ -170,12 +180,15 @@ function MainMenu() {
         />
       </div>
       <div className="flex gap-[48px]">
-        <button type="button">
-          <div className="rounded-[32px] bg-[#f6f8fa] w-[112px] h-[112px] justify-items-center content-center">
-            <img className="w-[56px]" src={`${process.env.PUBLIC_URL}/images/icon-warranty.png`} alt="ycar" />
-          </div>
-          <div className="font-[SpoqaHanSansNeo-Regular] text-[14px] mt-[12px]">내차팔기 홈서비스</div>
-        </button>
+        <div>
+          <button type="button" onClick={openModal} className="flex flex-col items-center">
+            <div className="rounded-[32px] bg-[#f6f8fa] w-[112px] h-[112px] flex items-center justify-center">
+              <img className="w-[56px]" src={`${process.env.PUBLIC_URL}/images/icon-warranty.png`} alt="ycar" />
+            </div>
+            <div className="font-[SpoqaHanSansNeo-Regular] text-[14px] mt-[12px]">내차팔기 홈서비스</div>
+          </button>
+          <Register visible={modalVisible} onClose={closeModal} onRegisterSuccess={onRegisterSuccess} />
+        </div>
         <button type="button">
           <div className="rounded-[32px] bg-[#f6f8fa] w-[112px] h-[112px] justify-items-center content-center">
             <img className="w-[56px]" src={`${process.env.PUBLIC_URL}/images/icon-warranty2.png`} alt="ycar" />
