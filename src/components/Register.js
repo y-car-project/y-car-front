@@ -11,7 +11,10 @@ export default function Register({ visible, onClose, onRegisterSuccess }) {
 
   useEffect(() => {
     if (visible) {
-      if (!sessionStorage.getItem('Authorization')) {
+      const cookies = document.cookie;
+      const isLoggedIn = cookies.includes('Authorization=');
+      const auth = sessionStorage.getItem('Authorization');
+      if (!auth && !isLoggedIn) {
         alert('로그인이 필요합니다.');
         window.location.href = '/login';
         return;
