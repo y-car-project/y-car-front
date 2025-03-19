@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 export default function Header() {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(false);
+  const [email, setEmail] = useState('');
 
   const getCookie = (cname) => {
     const name = `${cname}=`;
@@ -30,8 +31,10 @@ export default function Header() {
     if (Authorization) {
       axios.defaults.headers.common.Authorization = Authorization; // JWT 로그인 처리
       setIsLogin(true);
+      setEmail(sessionStorage.getItem('email'));
     } else {
       Authorization = getCookie('Authorization');
+      setEmail(getCookie('email'));
       if (Authorization) {
         axios.defaults.headers.common.Authorization = Authorization; // 카카오 로그인 처리
         setIsLogin(true);
@@ -104,7 +107,7 @@ export default function Header() {
                 type="button"
               >
                 <span className="absolute top-1/2 left-0 transform -translate-y-1/2 w-[1px] h-[12px] bg-[#d8d8d8]" />
-                마이페이지
+                {email}
               </button>
             </div>
           ) : (

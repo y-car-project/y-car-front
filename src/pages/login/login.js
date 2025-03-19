@@ -110,6 +110,7 @@ export default function Login() {
 
       if (response.status === 200 && response.data.success) {
         sessionStorage.setItem('Authorization', response.data.Authorization);
+        sessionStorage.setItem('email', userId);
         alert('로그인 성공!');
         navigate('/main');
       } else {
