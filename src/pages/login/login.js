@@ -110,7 +110,9 @@ export default function Login() {
 
       if (response.status === 200 && response.data.success) {
         // 로그인 성공 처리
+        sessionStorage.setItem('Authorization', response.data.Authorization);
         alert('로그인 성공!');
+        navigate('/main');
         // 예: 페이지 이동, 로컬스토리지 저장 등 추가 로직
       } else {
         // 로그인 실패 처리 (서버가 보낸 에러 메시지 표시)
