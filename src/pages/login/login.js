@@ -113,15 +113,12 @@ export default function Login() {
         sessionStorage.setItem('Authorization', response.data.Authorization);
         alert('로그인 성공!');
         navigate('/main');
-        // 예: 페이지 이동, 로컬스토리지 저장 등 추가 로직
       } else {
-        // 로그인 실패 처리 (서버가 보낸 에러 메시지 표시)
         setIdError('');
         setPasswordError('');
         setDuplicateMessage(response.data.message || '아이디 또는 비밀번호가 올바르지 않습니다.');
       }
     } catch (error) {
-      // 요청 실패 시 처리 (네트워크 에러 등)
       console.error('로그인 요청 실패:', error);
       alert('서버와의 연결에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.');
     }
@@ -264,13 +261,16 @@ export default function Login() {
           <div className="flex items-center justify-center gap-6">
             {/* 카카오 */}
             <div className="flex flex-col items-center">
-              <button type="button" className="w-[60px] h-[60px] text-black font-bold flex items-center justify-center">
+              <a
+                href="http://localhost:8080/kakaoLogin"
+                className="w-[60px] h-[60px] text-black font-bold flex items-center justify-center"
+              >
                 <img
                   className="w-auto h-[56px] "
                   src={`${process.env.PUBLIC_URL}/images/icon-login-kakao.svg`}
                   alt="logo"
                 />
-              </button>
+              </a>
               <span className="text-[12px] text-gray-500">카카오</span>
             </div>
             {/* 네이버 */}
