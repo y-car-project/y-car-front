@@ -260,13 +260,16 @@ export default function Login() {
           <div className="flex items-center justify-center gap-6">
             {/* 카카오 */}
             <div className="flex flex-col items-center">
-              <button type="button" className="w-[60px] h-[60px] text-black font-bold flex items-center justify-center">
+              <a
+                href="http://localhost:8080/kakaoLogin"
+                className="w-[60px] h-[60px] text-black font-bold flex items-center justify-center"
+              >
                 <img
                   className="w-auto h-[56px] "
                   src={`${process.env.PUBLIC_URL}/images/icon-login-kakao.svg`}
                   alt="logo"
                 />
-              </button>
+              </a>
               <span className="text-[12px] text-gray-500">카카오</span>
             </div>
             {/* 네이버 */}
