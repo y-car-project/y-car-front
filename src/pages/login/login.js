@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Slider from 'react-slick';
 import { LuEye, LuEyeOff } from 'react-icons/lu';
 import { FaCircleXmark } from 'react-icons/fa6';
@@ -66,6 +66,14 @@ export default function Login() {
   const [keepLoggedIn, setKeepLoggedIn] = useState(false);
   const [saveId, setSaveId] = useState(false);
   const navigate = useNavigate();
+  useEffect(() => {
+    const token = sessionStorage.getItem('Authorization');
+    const cookies = document.cookie;
+    const isLoggedIn = token || cookies.includes('Authorization=');
+    if (isLoggedIn) {
+      navigate('/main');
+    }
+  }, [navigate]);
   /** 아이디 검증 */
   const validateUserId = (id) => {
     if (id === '') setIdError('아이디를 입력해주세요.');
