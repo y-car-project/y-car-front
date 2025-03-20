@@ -5,7 +5,8 @@ import { FaCircleXmark } from 'react-icons/fa6';
 import { RiCheckboxCircleFill } from 'react-icons/ri';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import GoogleLoginButton from '../../components/GoogleLoginButton';
 /** 커스텀 Dot 컴포넌트 (밖에서 정의) */
 function CustomDot() {
   return (
@@ -294,7 +295,7 @@ export default function Login() {
               <span className="text-[12px] text-gray-500">네이버</span>
             </div>
             {/* Apple */}
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center mr-6">
               <button type="button" className="w-[60px] h-[60px]  font-bold flex items-center justify-center">
                 <img
                   className="w-auto h-[56px] "
@@ -303,6 +304,14 @@ export default function Login() {
                 />
               </button>
               <span className="text-[12px] text-gray-500">Apple</span>
+            </div>
+            <div className="flex flex-col items-center">
+              <button type="button" className="w-[60px] h-[60px]  font-bold flex items-center justify-center">
+                <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
+                  <GoogleLoginButton />
+                </GoogleOAuthProvider>
+              </button>
+              <span className="text-[12px] text-gray-500">Google</span>
             </div>
           </div>
         </div>
