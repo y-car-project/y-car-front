@@ -1,9 +1,6 @@
 import './App.css';
 import { Routes, Route } from 'react-router-dom';
-// import Main from './pages/main/Main';
 import Main from './pages/main/Main';
-import Header from './components/Header';
-import Footer from './components/Footer';
 import Signup from './pages/signup/signup';
 import Login from './pages/login/login';
 import 'slick-carousel/slick/slick.css';
@@ -16,16 +13,7 @@ function App() {
       <Routes>
         <Route path="/*" element={<Main />} />
         <Route path="/login" element={<Login />} />
-        <Route
-          path="/signup"
-          element={
-            <>
-              <Header />
-              <Signup />
-              <Footer />
-            </>
-          }
-        />
+        <Route path="/signup" element={<Signup />} />
       </Routes>
     </div>
   );
