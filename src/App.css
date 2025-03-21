@@ -1,0 +1,54 @@
+@font-face {
+  font-family: 'SpoqaHanSansNeo-Light';
+  src: url('./fonts/SpoqaHanSansNeo-Light.ttf');
+}
+@font-face {
+  font-family: 'SpoqaHanSansNeo-Bold';
+  src: url('./fonts/SpoqaHanSansNeo-Bold.ttf');
+}
+@font-face {
+  font-family: 'SpoqaHanSansNeo-Medium';
+  src: url('./fonts/SpoqaHanSansNeo-Medium.ttf');
+}
+@font-face {
+  font-family: 'SpoqaHanSansNeo-Regular';
+  src: url('./fonts/SpoqaHanSansNeo-Regular.ttf');
+}
+@font-face {
+  font-family: 'SpoqaHanSansNeo-Thin';
+  src: url('./fonts/SpoqaHanSansNeo-Thin.ttf');
+}
+
+.swiper-pagination.swiper-pagination-fraction {
+  color: white;
+  width: 66px;
+  height: 32px;
+  border-radius: 50px;
+  background: rgba(22, 23, 29, 0.4);
+  bottom: 20px;
+  left: 100px;
+  place-content: center;
+}
+
+.swiper .swiper-button-next,
+.swiper .swiper-button-prev {
+  width: 20px;
+  height: 30px;
+  color: white;
+  background: rgba(22, 23, 29, 0.4);
+  border-radius: 50px;
+  bottom: 21px;
+  top: auto;
+}
+
+.swiper .swiper-button-next {
+  left: 173px;
+}
+
+.swiper .swiper-button-prev {
+  left: 75px;
+}
+.swiper-button-next:after,
+.swiper-button-prev:after {
+  font-size: 16px !important;
+}
